@@ -17,6 +17,10 @@ class YoutuveChannel implements IObservable {
       this.lastVideoTitle = ''
    }
 
+   get getSuscriptors() {
+      return this.suscriptors
+   }
+
    /**setter and getter */
    getLastVideoTitle(): string {
       return this.lastVideoTitle
@@ -25,7 +29,13 @@ class YoutuveChannel implements IObservable {
    addObserver(observer: Suscriptor): void {
       this.suscriptors.push(observer)
    }
-   removeObserver(observer: IObserver): void {}
+   removeObserver(observer: IObserver): void {
+      const index = this.suscriptors.findIndex((obs) => {
+         return obs === observer
+      })
+
+      this.suscriptors.splice(index, 1)
+   }
 
    notifyAllObservers(command: string, observable: YoutuveChannel): void {
       for (const suscriptor of this.suscriptors) {
@@ -62,6 +72,9 @@ const suscriptor1 = new Suscriptor('ronald')
 const suscriptor2 = new Suscriptor('messi')
 youtuveChannelRonald.addObserver(suscriptor1)
 youtuveChannelRonald.addObserver(suscriptor2)
-
+youtuveChannelRonald.removeObserver(suscriptor2)
+/* 
 youtuveChannelRonald.addNewVideo('Dios es Amor')
 youtuveChannelRonald.addNewVideo('Design patterns')
+ */
+console.log(youtuveChannelRonald.getSuscriptors)
